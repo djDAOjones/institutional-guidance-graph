@@ -1,0 +1,136 @@
+/**
+ * Global CSS for Institutional Guidance Graph.
+ *
+ * Tailwind CSS v4 uses @import syntax instead of @tailwind directives.
+ * Design tokens are defined via @theme to integrate with Tailwind's utility system.
+ *
+ * Carbon Design System tokens are mapped as CSS custom properties.
+ * WCAG AAA: Focus styles use 2px solid ring with 2px offset for visibility.
+ */
+
+@import "tailwindcss";
+
+/*
+ * IBM Carbon Design System colour tokens mapped to Tailwind v4 theme.
+ * These power all utility classes (e.g. bg-background, text-foreground).
+ */
+@theme {
+  /* ── Carbon Gray scale ── */
+  --color-carbon-gray-10: #f4f4f4;
+  --color-carbon-gray-20: #e0e0e0;
+  --color-carbon-gray-30: #c6c6c6;
+  --color-carbon-gray-50: #8d8d8d;
+  --color-carbon-gray-60: #6f6f6f;
+  --color-carbon-gray-70: #525252;
+  --color-carbon-gray-80: #393939;
+  --color-carbon-gray-90: #262626;
+  --color-carbon-gray-100: #161616;
+
+  /* ── Carbon Blue (interactive) ── */
+  --color-carbon-blue-20: #d0e2ff;
+  --color-carbon-blue-40: #78a9ff;
+  --color-carbon-blue-60: #0f62fe;
+  --color-carbon-blue-70: #0043ce;
+  --color-carbon-blue-80: #002d9c;
+
+  /* ── Carbon support colours ── */
+  --color-carbon-red-60: #da1e28;
+  --color-carbon-green-50: #24a148;
+  --color-carbon-yellow-30: #f1c21b;
+  --color-carbon-purple-60: #8a3ffc;
+  --color-carbon-teal-50: #009d9a;
+
+  /* ── Semantic aliases ── */
+  --color-background: #ffffff;
+  --color-background-subtle: #f4f4f4;
+  --color-background-inverse: #161616;
+
+  --color-foreground: #161616;
+  --color-foreground-secondary: #525252;
+  --color-foreground-inverse: #ffffff;
+  --color-foreground-disabled: #8d8d8d;
+
+  --color-interactive: #0f62fe;
+  --color-interactive-hover: #0043ce;
+  --color-interactive-active: #002d9c;
+
+  --color-border: #e0e0e0;
+  --color-border-strong: #8d8d8d;
+  --color-border-interactive: #0f62fe;
+
+  --color-status-error: #da1e28;
+  --color-status-success: #24a148;
+  --color-status-warning: #f1c21b;
+  --color-status-info: #0f62fe;
+
+  /* ── IBM Carbon type scale ── */
+  --font-size-carbon-xs: 0.75rem;
+  --font-size-carbon-sm: 0.875rem;
+  --font-size-carbon-base: 1rem;
+  --font-size-carbon-lg: 1.125rem;
+  --font-size-carbon-xl: 1.25rem;
+  --font-size-carbon-2xl: 1.5rem;
+  --font-size-carbon-3xl: 1.75rem;
+  --font-size-carbon-4xl: 2rem;
+  --font-size-carbon-5xl: 2.625rem;
+
+  /* ── IBM Carbon spacing scale ── */
+  --spacing-carbon-1: 0.125rem;
+  --spacing-carbon-2: 0.25rem;
+  --spacing-carbon-3: 0.5rem;
+  --spacing-carbon-4: 0.75rem;
+  --spacing-carbon-5: 1rem;
+  --spacing-carbon-6: 1.5rem;
+  --spacing-carbon-7: 2rem;
+  --spacing-carbon-8: 2.5rem;
+  --spacing-carbon-9: 3rem;
+
+  /* ── Transition durations ── */
+  --transition-duration-carbon-fast: 70ms;
+  --transition-duration-carbon-moderate: 150ms;
+  --transition-duration-carbon-slow: 240ms;
+}
+
+/**
+ * Base HTML element styles.
+ * Sets Carbon's recommended body font and ensures smooth scrolling.
+ */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * Global focus styles for keyboard navigation (WCAG AAA).
+ * All focusable elements get a visible focus ring.
+ */
+*:focus-visible {
+  outline: 2px solid var(--color-interactive);
+  outline-offset: 2px;
+}
+
+/**
+ * Skip-to-content link for screen reader and keyboard users.
+ * Hidden by default, revealed on focus.
+ */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-interactive);
+  color: var(--color-foreground-inverse);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-to-content:focus {
+  left: 0;
+  top: 0;
+}
