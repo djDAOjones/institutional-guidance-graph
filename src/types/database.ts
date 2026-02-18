@@ -51,6 +51,16 @@ export interface Service {
   created_at: string;
 }
 
+/** A technical service within a service (e.g. "Turnitin Originality" under "Turnitin") */
+export interface TechnicalService {
+  id: string;
+  slug: string;
+  label: string;
+  service_id: string | null;
+  description: string | null;
+  created_at: string;
+}
+
 /** Audience with optional parent for hierarchy (e.g. "Academic Staff" under "Staff") */
 export interface Audience {
   id: string;
@@ -187,6 +197,14 @@ export interface GuidanceLink {
   created_at: string;
 }
 
+/** GuidanceItem → TechnicalService */
+export interface GuidanceTechnicalService {
+  id: string;
+  guidance_item_id: string;
+  technical_service_id: string;
+  created_at: string;
+}
+
 /* ── Auth ── */
 
 /** Row in user_roles table */
@@ -208,6 +226,7 @@ export interface Database {
     Tables: {
       service_areas: { Row: ServiceArea };
       services: { Row: Service };
+      technical_services: { Row: TechnicalService };
       audiences: { Row: Audience };
       tasks: { Row: Task };
       topics: { Row: Topic };
@@ -222,6 +241,7 @@ export interface Database {
       guidance_maintainers: { Row: GuidanceMaintainer };
       guidance_locations: { Row: GuidanceLocation };
       guidance_links: { Row: GuidanceLink };
+      guidance_technical_services: { Row: GuidanceTechnicalService };
       user_roles: { Row: UserRoleRow };
     };
   };
