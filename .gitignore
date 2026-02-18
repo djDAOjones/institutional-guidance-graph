@@ -45,3 +45,5 @@ next-env.d.ts
 .vscode/
 *.swp
 *.swo
+dev_docs/twilio_2FA_recovery_code.txt
+dev_docs/*.docx
