@@ -200,6 +200,7 @@ institutional-guidance-graph/
 **Goal**: Streamlined user experience based on real usage patterns.
 
 **UX Improvements Completed**:
+
 - ✅ **Pure Diátaxis framework** - removed service_manual, back to tutorial/how-to/reference/explanation
 - ✅ **"Intended" status** as first option and default for new items
 - ✅ **Content Title** label (more generic than "Title")
@@ -265,6 +266,25 @@ institutional-guidance-graph/
 - `src/lib/styles.ts` — Shared CSS class constants
 - `src/components/ConfirmDialog.tsx` — WCAG-compliant modal dialog
 - `src/components/DeleteItemButton.tsx` — Delete button with confirmation
+
+---
+
+### ✅ Phase 2.1 — Database Vocabulary Updates *(COMPLETED)*
+
+**Goal**: Update database vocabularies to reflect current organizational structure and user requirements.
+
+**Changes Implemented**:
+
+- ✅ **Tasks vocabulary updates** — Added 6 new tasks (Digital Accessibility, Productivity Tools, Presentation Tools, Lecture Capture, AI, Module Design), removed 3 outdated tasks (manage users, report/analyse, set up), renamed 3 existing tasks (Give Feedback → Student Feedback, Mark/Assess → Assessment, Submit Work → Assignment Submission)
+- ✅ **Owners vocabulary updates** — Added 7 new owners (5 faculties + Libraries + Registrar), removed 4 outdated owners (Academic Services, Digital Education Service - Learning Content Team, Planning and Performance, Quality and Standards), renamed 2 existing owners (Centre for Teaching and Learning → Educational Excellence, Communications → External Relations)
+- ✅ **Maintainers structure cleanup** — Removed maintainer relationships for 17 inappropriate owners, added 2 new maintainer-specific entries (Faculty and School Support, Learning Content Team), updated existing relationships
+- ✅ **UI improvements** — Fixed campus availability display in LocationSelector to show badges on separate line for better title visibility
+- ✅ **Seed data updates** — Updated seed data to reflect all new vocabulary structures for fresh deployments
+
+**Database Migrations Applied**:
+- Migration 00009: update_tasks_vocabulary
+- Migration 00010: update_owners_vocabulary  
+- Migration 00011: update_maintainers_structure
 
 ---
 

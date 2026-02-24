@@ -48,6 +48,31 @@
 8. Prepare `Database` type with `TableDef` helper for future Supabase auto-gen type safety
 9. Document path to full type-safe Supabase client via `npx supabase gen types`
 
+## ✅ Completed - Database & Organizational Structure
+
+1. Update DTS team names to reflect new organizational structure
+   - Digital Education Service (formerly Learning Technology)
+   - Digital Education Service - Learning Content Team (formerly Media Production)
+   - IT Service Desk team and Smart Bar (formerly Service Desk)
+   - Cloud Infrastructure (formerly Infrastructure)
+   - Added 6 additional DTS teams (Cyber Security, Application Support, IT Operations, Digital Campus Services, Customer Service, Service Management)
+2. Update seed data with new team structure for fresh deployments
+3. Apply database migration to update existing records
+
+## ✅ Completed - Database Vocabulary Updates (Phase 2.1)
+
+1. **DB updates** - Comprehensive vocabulary restructuring implemented:
+   - ✅ Tasks: Added 6 new tasks (Digital Accessibility, Productivity Tools, Presentation Tools, Lecture Capture, AI, Module Design)
+   - ✅ Tasks: Removed 3 outdated tasks (manage users, Report/Analyse, Set Up)
+   - ✅ Tasks: Updated 3 existing tasks (Give Feedback → Student Feedback, Mark/Assess → Assessment, Submit Work → Assignment Submission)
+   - ✅ Owners: Added 7 new owners (Faculty of Art, Faculty of Engineering, Faculty of Medicine and Health Sciences, Faculty of Science, Faculty of Social Sciences, Libraries, Registrar)
+   - ✅ Owners: Removed 4 outdated owners (Academic Services, Digital Education Service - Learning Content Team, Planning and Performance, Quality and Standards)
+   - ✅ Owners: Updated 2 existing owners (Centre for Teaching and Learning → Educational Excellence, Communications → External Relations)
+   - ✅ Maintainers: Cleaned up inappropriate maintainer relationships (removed 17 owners from maintainer roles)
+   - ✅ Maintainers: Added 2 new maintainer-specific entries (Faculty and School Support, Learning Content Team)
+   - ✅ Maintainers: Updated existing relationships (Digital Education Service → Faculty and School Support, Digital Education Service - Learning Content Team → Learning Content Team)
+2. **UI improvements**: Campus availability badges now display on separate line for better title visibility in LocationSelector
+
 ## 🔄 Remaining
 
 1. Give users the ability to add new relationship categories

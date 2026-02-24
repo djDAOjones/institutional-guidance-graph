@@ -294,9 +294,9 @@ export default function LocationSelector({
                       className="mt-0.5 h-4 w-4 rounded border-border text-interactive focus:ring-2 focus:ring-interactive focus:ring-offset-2"
                     />
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-carbon-2">
+                      <div className="flex flex-col gap-carbon-1">
                         <span className="truncate">{loc.label}</span>
-                        {/* Campus availability badges */}
+                        {/* Campus availability badges - on separate line */}
                         {loc.campus_availability && loc.campus_availability.length > 0 && (
                           <div className="flex flex-shrink-0 gap-carbon-1">
                             {loc.campus_availability.map((campus) => (
