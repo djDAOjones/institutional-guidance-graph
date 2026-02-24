@@ -11,7 +11,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { unstable_cache } from "next/cache";
 import type { DocType, ItemStatus, AccessLevel, CampusScope } from "@/types/database";
 
 /** Shape of the form data for creating/updating a guidance item */
@@ -247,48 +246,44 @@ export async function deleteGuidanceItem(id: string) {
 /**
  * Fetch all lookup data for the guidance item form.
  *
- * Cached for 5 minutes via `unstable_cache` — lookup data rarely changes,
- * so this avoids redundant parallel queries on every form load.
- * Cache is invalidated when the "lookups" tag is revalidated.
+ * NOTE: Cannot use `unstable_cache` here because `createClient()` calls
+ * `cookies()`, which is a dynamic data source disallowed inside cache scopes.
+ * Caching can be added later via a service-role client or React `cache()`.
  */
-export const fetchLookups = unstable_cache(
-  async () => {
-    const supabase = await createClient();
+export async function fetchLookups() {
+  const supabase = await createClient();
 
-    const [
-      { data: serviceAreas },
-      { data: services },
-      { data: technicalServices },
-      { data: audiences },
-      { data: tasks },
-      { data: topics },
-      { data: owners },
-      { data: locations },
-    ] = await Promise.all([
-      supabase.from("service_areas").select("*").order("label"),
-      supabase.from("services").select("*").order("label"),
-      supabase.from("technical_services").select("*").order("label"),
-      supabase.from("audiences").select("*").order("label"),
-      supabase.from("tasks").select("*").order("label"),
-      supabase.from("topics").select("*").order("label"),
-      supabase.from("owners").select("*").order("label"),
-      supabase.from("locations").select("*").order("label"),
-    ]);
+  const [
+    { data: serviceAreas },
+    { data: services },
+    { data: technicalServices },
+    { data: audiences },
+    { data: tasks },
+    { data: topics },
+    { data: owners },
+    { data: locations },
+  ] = await Promise.all([
+    supabase.from("service_areas").select("*").order("label"),
+    supabase.from("services").select("*").order("label"),
+    supabase.from("technical_services").select("*").order("label"),
+    supabase.from("audiences").select("*").order("label"),
+    supabase.from("tasks").select("*").order("label"),
+    supabase.from("topics").select("*").order("label"),
+    supabase.from("owners").select("*").order("label"),
+    supabase.from("locations").select("*").order("label"),
+  ]);
 
-    return {
-      serviceAreas: serviceAreas ?? [],
-      services: services ?? [],
-      technicalServices: technicalServices ?? [],
-      audiences: audiences ?? [],
-      tasks: tasks ?? [],
-      topics: topics ?? [],
-      owners: owners ?? [],
-      locations: locations ?? [],
-    };
-  },
-  ["fetchLookups"],
-  { revalidate: 300, tags: ["lookups"] },
-);
+  return {
+    serviceAreas: serviceAreas ?? [],
+    services: services ?? [],
+    technicalServices: technicalServices ?? [],
+    audiences: audiences ?? [],
+    tasks: tasks ?? [],
+    topics: topics ?? [],
+    owners: owners ?? [],
+    locations: locations ?? [],
+  };
+}
 
 /**
  * Fetch a single guidance item with all its relationships for editing.
