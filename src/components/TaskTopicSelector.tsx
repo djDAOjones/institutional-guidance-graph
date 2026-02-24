@@ -16,12 +16,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import SearchableCheckboxGroup from "@/components/SearchableCheckboxGroup";
-import type { Task, Topic } from "@/types/database";
-
-interface TaskDefaultTopic {
-  task_id: string;
-  topic_id: string;
-}
+import type { Task, Topic, TaskDefaultTopic } from "@/types/database";
 
 interface TaskTopicSelectorProps {
   tasks: Task[];

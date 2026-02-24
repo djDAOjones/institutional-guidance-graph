@@ -9,6 +9,9 @@
  */
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+// NOTE: To enable full type-safe queries, generate types with:
+//   npx supabase gen types typescript --project-id figtiyversvulkqcvkdd > src/types/supabase.ts
+// Then pass the generated Database type as a generic to createServerClient<Database>(...).
 
 /**
  * Creates a Supabase client for server-side use (Server Components, Route Handlers).

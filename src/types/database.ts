@@ -150,6 +150,12 @@ export interface GuidanceItem {
   updated_by: string | null;
 }
 
+/** Default topic mapping for a task (used by TaskTopicSelector) */
+export interface TaskDefaultTopic {
+  task_id: string;
+  topic_id: string;
+}
+
 /* ── Relationship (join) table types ── */
 
 /** GuidanceItem → Service (ABOUT_SERVICE) */
@@ -238,31 +244,53 @@ export interface UserRoleRow {
 /* ── Supabase database type map ── */
 
 /**
+ * Helper: build a full table definition from a Row type.
+ *
+ * Insert allows partial rows (DB defaults fill the rest).
+ * Update is always partial.
+ * Relationships left empty — not needed for basic query typing.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type TableDef<R extends Record<string, any>> = {
+  Row: R;
+  Insert: Partial<R>;
+  Update: Partial<R>;
+  Relationships: [];
+};
+
+/**
  * Top-level type representing the full database schema.
- * Used by the Supabase client for type-safe queries.
+ * Used by the Supabase client generic for type-safe queries.
+ *
+ * When the schema changes, regenerate with:
+ *   npx supabase gen types typescript --project-id <id> > src/types/database.ts
  */
 export interface Database {
   public: {
     Tables: {
-      service_areas: { Row: ServiceArea };
-      services: { Row: Service };
-      technical_services: { Row: TechnicalService };
-      audiences: { Row: Audience };
-      tasks: { Row: Task };
-      topics: { Row: Topic };
-      owners: { Row: Owner };
-      locations: { Row: Location };
-      guidance_items: { Row: GuidanceItem };
-      guidance_services: { Row: GuidanceService };
-      guidance_tasks: { Row: GuidanceTask };
-      guidance_topics: { Row: GuidanceTopic };
-      guidance_audiences: { Row: GuidanceAudience };
-      guidance_owners: { Row: GuidanceOwner };
-      guidance_maintainers: { Row: GuidanceMaintainer };
-      guidance_locations: { Row: GuidanceLocation };
-      guidance_links: { Row: GuidanceLink };
-      guidance_technical_services: { Row: GuidanceTechnicalService };
-      user_roles: { Row: UserRoleRow };
+      service_areas: TableDef<ServiceArea>;
+      services: TableDef<Service>;
+      technical_services: TableDef<TechnicalService>;
+      audiences: TableDef<Audience>;
+      tasks: TableDef<Task>;
+      topics: TableDef<Topic>;
+      owners: TableDef<Owner>;
+      locations: TableDef<Location>;
+      guidance_items: TableDef<GuidanceItem>;
+      guidance_services: TableDef<GuidanceService>;
+      guidance_tasks: TableDef<GuidanceTask>;
+      guidance_topics: TableDef<GuidanceTopic>;
+      guidance_audiences: TableDef<GuidanceAudience>;
+      guidance_owners: TableDef<GuidanceOwner>;
+      guidance_maintainers: TableDef<GuidanceMaintainer>;
+      guidance_locations: TableDef<GuidanceLocation>;
+      guidance_links: TableDef<GuidanceLink>;
+      guidance_technical_services: TableDef<GuidanceTechnicalService>;
+      user_roles: TableDef<UserRoleRow>;
     };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
 }

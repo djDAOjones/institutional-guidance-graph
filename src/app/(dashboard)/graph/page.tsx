@@ -16,6 +16,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { deleteGuidanceItem } from "@/lib/actions/guidance";
+import DeleteItemButton from "@/components/DeleteItemButton";
 import {
   DOC_TYPE_LABELS,
   STATUS_LABELS,
@@ -174,28 +175,13 @@ export default async function GraphPage() {
                       >
                         Edit
                       </Link>
-                      <form
-                        action={async () => {
+                      <DeleteItemButton
+                        itemTitle={item.title}
+                        deleteAction={async () => {
                           "use server";
                           await deleteGuidanceItem(item.id);
                         }}
-                      >
-                        <button
-                          type="submit"
-                          className="text-status-error hover:underline"
-                          onClick={(e) => {
-                            if (
-                              !window.confirm(
-                                `Delete "${item.title}"? This cannot be undone.`,
-                              )
-                            ) {
-                              e.preventDefault();
-                            }
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </form>
+                      />
                     </div>
                   </td>
                 </tr>
@@ -208,44 +194,29 @@ export default async function GraphPage() {
   );
 }
 
-/** Document type badge with visual emphasis for service manuals */
+/** Document type badge with colour-coded styling per type */
 function DocTypeBadge({ docType }: { docType: DocType }) {
-  const isServiceManual = docType === "service_manual";
-  
+  const colours: Record<DocType, string> = {
+    tutorial: "bg-carbon-purple-20/20 text-carbon-purple-60",
+    how_to: "bg-carbon-blue-20/20 text-carbon-blue-60",
+    reference: "bg-carbon-teal-20/20 text-carbon-teal-60",
+    explanation: "bg-carbon-green-20/20 text-carbon-green-60",
+    navigation: "bg-carbon-gray-20/20 text-carbon-gray-70",
+  };
+
   return (
-    <div className="flex items-center gap-carbon-2">
-      {isServiceManual && (
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="text-carbon-blue-60"
-          aria-hidden="true"
-        >
-          <path
-            d="M2 3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1H2V3zM2 5h12v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5zm2 2v1h8V7H4zm0 2v1h6V9H4z"
-            fill="currentColor"
-          />
-        </svg>
-      )}
-      <span
-        className={`inline-block rounded px-carbon-2 py-carbon-1 text-carbon-xs font-medium ${
-          isServiceManual
-            ? "bg-carbon-blue-20/20 text-carbon-blue-60 border border-carbon-blue-30"
-            : "text-foreground-secondary"
-        }`}
-      >
-        {DOC_TYPE_LABELS[docType] ?? docType}
-      </span>
-    </div>
+    <span
+      className={`inline-block rounded px-carbon-2 py-carbon-1 text-carbon-xs font-medium ${colours[docType] ?? "text-foreground-secondary"}`}
+    >
+      {DOC_TYPE_LABELS[docType] ?? docType}
+    </span>
   );
 }
 
 /** Colour-coded status badge following Carbon status colours */
 function StatusBadge({ status }: { status: ItemStatus }) {
   const colours: Record<ItemStatus, string> = {
+    intended: "bg-carbon-blue-20/20 text-carbon-blue-60",
     draft: "bg-carbon-yellow-30/20 text-carbon-gray-90",
     canonical: "bg-carbon-green-50/20 text-carbon-green-50",
     duplicate: "bg-carbon-purple-60/20 text-carbon-purple-60",

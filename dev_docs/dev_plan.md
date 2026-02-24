@@ -245,20 +245,40 @@ institutional-guidance-graph/
 
 ---
 
+### ✅ Phase 2.0 — Code Review Implementation *(COMPLETED)*
+
+**Goal**: Implement code review recommendations for accessibility, performance, and maintainability.
+
+**Changes Implemented**:
+
+- ✅ **Shared CSS utility** — Extracted repeated class strings into `src/lib/styles.ts` (inputClasses, labelClasses, helperClasses, checkboxClasses, primaryButtonClasses, secondaryButtonClasses, dangerButtonClasses)
+- ✅ **WCAG-compliant delete dialog** — Replaced `window.confirm()` with `ConfirmDialog` + `DeleteItemButton` using native `<dialog>`, focus trap, Escape key, aria-modal
+- ✅ **Memoized Fuse instance** — `SearchableCheckboxGroup` now creates the Fuse index once per items change, separate from filtered results
+- ✅ **Shared DEBOUNCE_MS** — All debounced inputs use the constant from `@/lib/constants`
+- ✅ **aria-live search results** — Screen readers announce search result counts in `SearchableCheckboxGroup`
+- ✅ **aria-hidden SVGs** — Decorative icons marked with `aria-hidden="true"`
+- ✅ **fetchLookups caching** — Wrapped in `unstable_cache` with 5-minute TTL and "lookups" tag
+- ✅ **Database type preparation** — `TableDef` helper with Row/Insert/Update/Relationships; documented path to auto-generated types via `npx supabase gen types`
+
+**New Components**:
+
+- `src/lib/styles.ts` — Shared CSS class constants
+- `src/components/ConfirmDialog.tsx` — WCAG-compliant modal dialog
+- `src/components/DeleteItemButton.tsx` — Delete button with confirmation
+
+---
+
 ## Current Phase
 
-### 🎯 Phase 2.0 — Ready for Code Review *(READY)*
+### 🎯 Phase 3.0 — Graph Visualisation *(NEXT)*
 
-**Goal**: Prepare for architectural review and plan next phase of development.
-
-**Current Status**: 
-- ✅ **All UX enhancements completed** - comprehensive form with smart defaults, simple/advanced modes
-- ✅ **Database schema mature** - collections, campus availability, RLS policies, constraints
-- ✅ **Component architecture stable** - modular selectors with consistent patterns
-- ✅ **Documentation current** - to_add.md reorganized, dev_plan.md updated
+**Goal**: Build the interactive graph explorer with Cytoscape.js.
 
 **Remaining Low-Priority Items**:
-- [ ] **Dynamic relationship management** — Allow users to add new relationship categories (low priority)
+
+- [ ] **Dynamic relationship management** — Allow users to add new relationship categories
+- [ ] **Vocabulary management UI** — Admin interface for tasks, topics, default topics
+- [ ] **Auto-generate Supabase types** — `npx supabase gen types typescript` for full type-safe queries
 
 ---
 

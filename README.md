@@ -55,7 +55,9 @@ SQL migrations are in `supabase/migrations/`. Run them in order against your Sup
 ## Documentation
 
 - `Spec.md` — Full product specification
-- `dev_plan.md` — Detailed development plan
+- `dev_docs/dev_plan.md` — Detailed development plan
+- `dev_docs/to_add.md` — Feature todo list
+- `dev_docs/code_review.md` — Code review findings and recommendations
 - `human_do.md` — Pre-development setup checklist
 
 ## License

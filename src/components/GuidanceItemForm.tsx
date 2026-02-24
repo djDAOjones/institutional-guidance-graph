@@ -16,11 +16,19 @@ import {
   DOC_TYPE_LABELS,
   STATUS_LABELS,
 } from "@/lib/constants";
+import {
+  inputClasses,
+  labelClasses,
+  helperClasses,
+  checkboxClasses,
+  primaryButtonClasses,
+  secondaryButtonClasses,
+} from "@/lib/styles";
 import LocationSelector from "@/components/LocationSelector";
 import SearchableCheckboxGroup from "@/components/SearchableCheckboxGroup";
 import AudienceSelector from "@/components/AudienceSelector";
 import TaskTopicSelector from "@/components/TaskTopicSelector";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import type {
   GuidanceItem,
   Service,
@@ -30,12 +38,8 @@ import type {
   Topic,
   Owner,
   Location,
+  TaskDefaultTopic,
 } from "@/types/database";
-
-interface TaskDefaultTopic {
-  task_id: string;
-  topic_id: string;
-}
 
 interface Lookups {
   services: Service[];
@@ -84,8 +88,8 @@ export default function GuidanceItemForm({
   // URL-based location suggestion
   const [suggestedLocationIds, setSuggestedLocationIds] = useState<string[]>([]);
 
-  // Auto-suggest locations based on URL domain
-  const handleUrlChange = (url: string) => {
+  // Auto-suggest locations based on URL domain (useCallback for stable reference)
+  const handleUrlChange = useCallback((url: string) => {
     if (!url || !lookups.locations) return;
     
     try {
@@ -94,10 +98,8 @@ export default function GuidanceItemForm({
       
       const suggestions = lookups.locations.filter(location => {
         if (!location.root_url) return false;
-        
         try {
           const locationDomain = new URL(location.root_url).hostname.toLowerCase();
-          // Match exact domain or subdomain
           return domain.includes(locationDomain) || locationDomain.includes(domain);
         } catch {
           return false;
@@ -106,23 +108,23 @@ export default function GuidanceItemForm({
       
       setSuggestedLocationIds(suggestions);
       
-      // Auto-select first suggestion if not already selected
-      if (suggestions.length > 0 && suggestions[0] && !selectedLocationIds.includes(suggestions[0])) {
-        const newSelected = [...selectedLocationIds, suggestions[0]];
-        setSelectedLocationIds(newSelected);
+      // Auto-select first suggestion if not already selected (functional update avoids stale closure)
+      if (suggestions.length > 0 && suggestions[0]) {
+        setSelectedLocationIds(prev => 
+          prev.includes(suggestions[0]!) ? prev : [...prev, suggestions[0]!]
+        );
       }
     } catch {
-      // Invalid URL, clear suggestions
       setSuggestedLocationIds([]);
     }
-  };
+  }, [lookups.locations]);
 
   return (
     <form action={action} className="space-y-carbon-7">
       {/* ── Editing Mode Toggle ── */}
       <div className="flex items-center justify-between rounded-lg border border-border bg-background-subtle p-carbon-4">
         <div>
-          <h2 className="text-carbon-base font-semibold text-foreground">
+          <h2 id="advanced-mode-label" className="text-carbon-base font-semibold text-foreground">
             {isAdvancedMode ? "Advanced" : "Simple"} Editing Mode
           </h2>
           <p className="text-carbon-sm text-foreground-secondary">
@@ -161,7 +163,7 @@ export default function GuidanceItemForm({
         <div className="space-y-carbon-2">
           <label
             htmlFor="title"
-            className="block text-carbon-sm font-medium text-foreground"
+            className={labelClasses}
           >
             Title <span className="text-status-error">*</span>
           </label>
@@ -171,7 +173,7 @@ export default function GuidanceItemForm({
             type="text"
             required
             defaultValue={item?.title ?? ""}
-            className="block w-full rounded border border-border bg-background px-carbon-4 py-carbon-3 text-carbon-base text-foreground focus:border-interactive focus:outline-none focus:ring-2 focus:ring-interactive focus:ring-offset-2"
+            className={inputClasses}
           />
         </div>
 
@@ -179,7 +181,7 @@ export default function GuidanceItemForm({
         <div className="space-y-carbon-2">
           <label
             htmlFor="url"
-            className="block text-carbon-sm font-medium text-foreground"
+            className={labelClasses}
           >
             URL <span className="text-status-error">*</span>
           </label>
@@ -191,7 +193,7 @@ export default function GuidanceItemForm({
             defaultValue={item?.url ?? ""}
             placeholder="https://..."
             onChange={(e) => handleUrlChange(e.target.value)}
-            className="block w-full rounded border border-border bg-background px-carbon-4 py-carbon-3 text-carbon-base text-foreground focus:border-interactive focus:outline-none focus:ring-2 focus:ring-interactive focus:ring-offset-2"
+            className={inputClasses}
           />
           {/* URL-based location suggestions */}
           {suggestedLocationIds.length > 0 && (
@@ -216,7 +218,7 @@ export default function GuidanceItemForm({
           <div className="space-y-carbon-2">
             <label
               htmlFor="summary"
-              className="block text-carbon-sm font-medium text-foreground"
+              className={labelClasses}
             >
               Summary
             </label>
@@ -226,7 +228,7 @@ export default function GuidanceItemForm({
               rows={3}
               required
               defaultValue={item?.summary ?? ""}
-              className="block w-full rounded border border-border bg-background px-carbon-4 py-carbon-3 text-carbon-base text-foreground focus:border-interactive focus:outline-none focus:ring-2 focus:ring-interactive focus:ring-offset-2"
+              className={inputClasses}
             />
           </div>
         )}
@@ -246,7 +248,7 @@ export default function GuidanceItemForm({
           <div className="space-y-carbon-2">
             <label
               htmlFor="doc_type"
-              className="block text-carbon-sm font-medium text-foreground"
+              className={labelClasses}
             >
               Document Type
             </label>
@@ -254,7 +256,7 @@ export default function GuidanceItemForm({
               id="doc_type"
               name="doc_type"
               defaultValue={item?.doc_type ?? "how_to"}
-              className="block w-full rounded border border-border bg-background px-carbon-4 py-carbon-3 text-carbon-base text-foreground focus:border-interactive focus:outline-none focus:ring-2 focus:ring-interactive focus:ring-offset-2"
+              className={inputClasses}
             >
               {Object.entries(DOC_TYPE_LABELS).map(([value, label]) => (
                 <option key={value} value={value}>
@@ -268,7 +270,7 @@ export default function GuidanceItemForm({
           <div className="space-y-carbon-2">
             <label
               htmlFor="status"
-              className="block text-carbon-sm font-medium text-foreground"
+              className={labelClasses}
             >
               Status
             </label>
@@ -276,7 +278,7 @@ export default function GuidanceItemForm({
               id="status"
               name="status"
               defaultValue={item?.status ?? "intended"}
-              className="block w-full rounded border border-border bg-background px-carbon-4 py-carbon-3 text-carbon-base text-foreground focus:border-interactive focus:outline-none focus:ring-2 focus:ring-interactive focus:ring-offset-2"
+              className={inputClasses}
             >
               {Object.entries(STATUS_LABELS).map(([value, label]) => (
                 <option key={value} value={value}>
@@ -294,13 +296,13 @@ export default function GuidanceItemForm({
                 name="access"
                 value="public"
                 defaultChecked={item?.access === "public"}
-                className="h-4 w-4 rounded border-border-strong text-interactive focus:ring-2 focus:ring-interactive focus:ring-offset-2"
+                className={checkboxClasses}
               />
               <span className="text-carbon-sm font-medium text-foreground">
                 Public Access
               </span>
             </label>
-            <p className="text-carbon-xs text-foreground-secondary">
+            <p className={helperClasses}>
               Tick for public access, untick for private (staff only)
             </p>
           </div>
@@ -318,7 +320,7 @@ export default function GuidanceItemForm({
               name="campus_scope"
               value="all"
             />
-            <p className="text-carbon-xs text-foreground-secondary">
+            <p className={helperClasses}>
               Guidance is relevant to all campuses by default. Individual campus selection available in advanced mode.
             </p>
           </div>
@@ -330,7 +332,7 @@ export default function GuidanceItemForm({
             <div className="space-y-carbon-2">
               <label
                 htmlFor="last_reviewed"
-                className="block text-carbon-sm font-medium text-foreground"
+                className={labelClasses}
               >
                 Last Reviewed
               </label>
@@ -339,14 +341,14 @@ export default function GuidanceItemForm({
                 name="last_reviewed"
                 type="date"
                 defaultValue={item?.last_reviewed?.split("T")[0] ?? ""}
-                className="block w-full rounded border border-border bg-background px-carbon-4 py-carbon-3 text-carbon-base text-foreground focus:border-interactive focus:outline-none focus:ring-2 focus:ring-interactive focus:ring-offset-2"
+                className={inputClasses}
               />
             </div>
 
             <div className="space-y-carbon-2">
               <label
                 htmlFor="review_cycle_months"
-                className="block text-carbon-sm font-medium text-foreground"
+                className={labelClasses}
               >
                 Review Cycle (months)
               </label>
@@ -357,7 +359,7 @@ export default function GuidanceItemForm({
                 min={1}
                 max={60}
                 defaultValue={item?.review_cycle_months ?? 12}
-                className="block w-full rounded border border-border bg-background px-carbon-4 py-carbon-3 text-carbon-base text-foreground focus:border-interactive focus:outline-none focus:ring-2 focus:ring-interactive focus:ring-offset-2"
+                className={inputClasses}
               />
             </div>
           </div>
@@ -389,7 +391,7 @@ export default function GuidanceItemForm({
             <div className="space-y-carbon-2">
               <label
                 htmlFor="parent_id"
-                className="block text-carbon-sm font-medium text-foreground"
+                className={labelClasses}
               >
                 Parent Collection (optional)
               </label>
@@ -397,7 +399,7 @@ export default function GuidanceItemForm({
                 id="parent_id"
                 name="parent_id"
                 defaultValue={item?.parent_id ?? ""}
-                className="block w-full rounded border border-border bg-background px-carbon-4 py-carbon-3 text-carbon-base text-foreground focus:border-interactive focus:outline-none focus:ring-2 focus:ring-interactive focus:ring-offset-2"
+                className={inputClasses}
               >
                 <option value="">-- Not part of a collection --</option>
                 {lookups.guidanceItems?.filter(gi => gi.id !== item?.id).map((guidanceItem) => (
@@ -406,7 +408,7 @@ export default function GuidanceItemForm({
                   </option>
                 ))}
               </select>
-              <p className="text-carbon-xs text-foreground-secondary">
+              <p className={helperClasses}>
                 Select a parent item if this is part of a larger collection
               </p>
             </div>
@@ -414,7 +416,7 @@ export default function GuidanceItemForm({
             <div className="space-y-carbon-2">
               <label
                 htmlFor="collection_title"
-                className="block text-carbon-sm font-medium text-foreground"
+                className={labelClasses}
               >
                 Collection Title (if parent)
               </label>
@@ -424,9 +426,9 @@ export default function GuidanceItemForm({
                 type="text"
                 defaultValue={item?.collection_title ?? ""}
                 placeholder="e.g., Complete Moodle Guide"
-                className="block w-full rounded border border-border bg-background px-carbon-4 py-carbon-3 text-carbon-base text-foreground focus:border-interactive focus:outline-none focus:ring-2 focus:ring-interactive focus:ring-offset-2"
+                className={inputClasses}
               />
-              <p className="text-carbon-xs text-foreground-secondary">
+              <p className={helperClasses}>
                 Title for this collection (only if this item is a collection parent)
               </p>
             </div>
@@ -449,7 +451,7 @@ export default function GuidanceItemForm({
         <div className="space-y-carbon-2">
           <label
             htmlFor="tags"
-            className="block text-carbon-sm font-medium text-foreground"
+            className={labelClasses}
           >
             Tags
           </label>
@@ -459,9 +461,9 @@ export default function GuidanceItemForm({
             type="text"
             defaultValue={item?.tags?.join(", ") ?? ""}
             placeholder="Comma-separated tags"
-            className="block w-full rounded border border-border bg-background px-carbon-4 py-carbon-3 text-carbon-base text-foreground focus:border-interactive focus:outline-none focus:ring-2 focus:ring-interactive focus:ring-offset-2"
+            className={inputClasses}
           />
-          <p className="text-carbon-xs text-foreground-secondary">
+          <p className={helperClasses}>
             Separate tags with commas
           </p>
         </div>
@@ -529,10 +531,9 @@ export default function GuidanceItemForm({
         <div>
           <LocationSelector
             label="Hosted Locations"
+            locations={lookups.locations}
             selectedLocations={selectedLocationIds}
-            onChange={(ids) => {
-              setSelectedLocationIds(ids);
-            }}
+            onChange={setSelectedLocationIds}
           />
           {/* Hidden inputs to submit the selected location IDs */}
           {selectedLocationIds.map((id) => (
@@ -550,13 +551,13 @@ export default function GuidanceItemForm({
       <div className="flex items-center gap-carbon-4">
         <button
           type="submit"
-          className="rounded bg-interactive px-carbon-6 py-carbon-3 text-carbon-base font-medium text-foreground-inverse transition-colors hover:bg-interactive-hover focus:outline-none focus:ring-2 focus:ring-interactive focus:ring-offset-2 active:bg-interactive-active"
+          className={primaryButtonClasses}
         >
           {isEditing ? "Update Item" : "Create Item"}
         </button>
         <a
           href="/graph"
-          className="rounded border border-border px-carbon-6 py-carbon-3 text-carbon-base font-medium text-foreground transition-colors hover:bg-background-subtle focus:outline-none focus:ring-2 focus:ring-interactive focus:ring-offset-2"
+          className={secondaryButtonClasses}
         >
           Cancel
         </a>

@@ -14,6 +14,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { DEBOUNCE_MS } from "@/lib/constants";
 import Fuse from "fuse.js";
 
 interface SearchableItem {
@@ -51,24 +52,28 @@ export default function SearchableCheckboxGroup({
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(searchQuery);
-    }, 300);
+    }, DEBOUNCE_MS);
 
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Memoised filtered items using Fuse.js for fuzzy search
+  // Memoised Fuse instance — only recreated when items change
+  const fuse = useMemo(
+    () =>
+      new Fuse(items, {
+        keys: ["label", "slug", "description"],
+        threshold: 0.3,
+        ignoreLocation: true,
+      }),
+    [items],
+  );
+
+  // Memoised filtered items using the stable Fuse instance
   const filteredItems = useMemo(() => {
     if (!debouncedQuery.trim()) return items;
-
-    const fuse = new Fuse(items, {
-      keys: ["label", "slug", "description"],
-      threshold: 0.3,
-      ignoreLocation: true,
-    });
-
     const results = fuse.search(debouncedQuery);
     return results.map(result => result.item);
-  }, [items, debouncedQuery]);
+  }, [items, debouncedQuery, fuse]);
 
   const selectedCount = selectedIds.length;
   const totalItems = items.length;
@@ -105,7 +110,7 @@ export default function SearchableCheckboxGroup({
               className="absolute right-2 top-1/2 -translate-y-1/2 text-foreground-secondary hover:text-foreground focus:outline-none focus:ring-2 focus:ring-interactive focus:ring-offset-1 rounded"
               aria-label="Clear search"
             >
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </button>
@@ -113,9 +118,9 @@ export default function SearchableCheckboxGroup({
         </div>
       </div>
 
-      {/* Search results summary */}
+      {/* Search results summary (live region for screen readers) */}
       {searchQuery && (
-        <div className="text-carbon-xs text-foreground-secondary">
+        <div aria-live="polite" aria-atomic="true" className="text-carbon-xs text-foreground-secondary">
           {showingCount === 0 
             ? `No ${label.toLowerCase()} match "${searchQuery}"`
             : `Showing ${showingCount} of ${totalItems} ${label.toLowerCase()}`
