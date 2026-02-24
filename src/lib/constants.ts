@@ -7,16 +7,18 @@
  * @module lib/constants
  */
 
-/** Human-readable labels for document types (Diátaxis framework) */
+/** Human-readable labels for document types (Diátaxis framework + Navigation) */
 export const DOC_TYPE_LABELS = {
   tutorial: "Tutorial",
   how_to: "How-To Guide",
   reference: "Reference",
   explanation: "Explanation",
+  navigation: "Navigation",
 } as const;
 
 /** Human-readable labels for item status */
 export const STATUS_LABELS = {
+  intended: "Intended",
   draft: "Draft",
   canonical: "Canonical",
   duplicate: "Duplicate",

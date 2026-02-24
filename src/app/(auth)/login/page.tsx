@@ -12,7 +12,7 @@
  */
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { APP_NAME } from "@/lib/constants";
@@ -24,6 +24,36 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+
+  useEffect(() => {
+    const hash = window.location.hash.startsWith("#")
+      ? window.location.hash.slice(1)
+      : window.location.hash;
+    const hashParams = new URLSearchParams(hash);
+    const searchParams = new URLSearchParams(window.location.search);
+
+    const errorCode = hashParams.get("error_code") ?? searchParams.get("error_code");
+    const errorDescription =
+      hashParams.get("error_description") ?? searchParams.get("error_description");
+    const errorValue = hashParams.get("error") ?? searchParams.get("error");
+
+    if (!errorValue && !errorCode && !errorDescription) {
+      return;
+    }
+
+    if (errorCode === "otp_expired") {
+      setError(
+        "Your verification link is invalid or has expired. Request a new link and open it immediately. If you are using SendGrid, disable click tracking for Supabase auth emails because tracked links can invalidate one-time tokens.",
+      );
+      return;
+    }
+
+    setError(
+      errorDescription
+        ? decodeURIComponent(errorDescription.replace(/\+/g, " "))
+        : "Authentication link failed. Please request a new verification email.",
+    );
+  }, []);
 
   /**
    * Handles form submission for email/password login.
@@ -77,7 +107,7 @@ export default function LoginPage() {
               role="alert"
               className="rounded border border-status-error/30 bg-status-error/10 p-carbon-4 text-carbon-sm text-status-error"
             >
-              <p className="font-medium">Sign in failed</p>
+              <p className="font-medium">Authentication issue</p>
               <p className="mt-carbon-1">{error}</p>
             </div>
           )}

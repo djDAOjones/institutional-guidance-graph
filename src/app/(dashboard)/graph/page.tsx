@@ -150,8 +150,8 @@ export default async function GraphPage() {
                       </p>
                     )}
                   </td>
-                  <td className="px-carbon-4 py-carbon-3 text-foreground-secondary">
-                    {DOC_TYPE_LABELS[item.doc_type as DocType] ?? item.doc_type}
+                  <td className="px-carbon-4 py-carbon-3">
+                    <DocTypeBadge docType={item.doc_type as DocType} />
                   </td>
                   <td className="px-carbon-4 py-carbon-3">
                     <StatusBadge status={item.status as ItemStatus} />
@@ -205,6 +205,41 @@ export default async function GraphPage() {
         </div>
       )}
     </main>
+  );
+}
+
+/** Document type badge with visual emphasis for service manuals */
+function DocTypeBadge({ docType }: { docType: DocType }) {
+  const isServiceManual = docType === "service_manual";
+  
+  return (
+    <div className="flex items-center gap-carbon-2">
+      {isServiceManual && (
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="text-carbon-blue-60"
+          aria-hidden="true"
+        >
+          <path
+            d="M2 3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1H2V3zM2 5h12v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5zm2 2v1h8V7H4zm0 2v1h6V9H4z"
+            fill="currentColor"
+          />
+        </svg>
+      )}
+      <span
+        className={`inline-block rounded px-carbon-2 py-carbon-1 text-carbon-xs font-medium ${
+          isServiceManual
+            ? "bg-carbon-blue-20/20 text-carbon-blue-60 border border-carbon-blue-30"
+            : "text-foreground-secondary"
+        }`}
+      >
+        {DOC_TYPE_LABELS[docType] ?? docType}
+      </span>
+    </div>
   );
 }
 

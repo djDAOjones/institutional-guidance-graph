@@ -12,11 +12,11 @@
 
 /* ── Enum types (match PostgreSQL enums) ── */
 
-/** Document type following the Diátaxis framework */
-export type DocType = "tutorial" | "how_to" | "reference" | "explanation";
+/** Document type following the Diátaxis framework + Navigation */
+export type DocType = "tutorial" | "how_to" | "reference" | "explanation" | "navigation";
 
 /** Guidance item lifecycle status */
-export type ItemStatus = "draft" | "canonical" | "duplicate" | "obsolete";
+export type ItemStatus = "intended" | "draft" | "canonical" | "duplicate" | "obsolete";
 
 /** Access level for the guidance item */
 export type AccessLevel = "public" | "staff" | "restricted";
@@ -29,6 +29,15 @@ export type UserRole = "viewer" | "editor" | "admin";
 
 /** Self-referencing link type between guidance items */
 export type LinkType = "duplicate_of" | "supersedes" | "related_to";
+
+/** Location type for hierarchical containers */
+export type LocationType = 
+  | "sharepoint_site" 
+  | "xerte_collection" 
+  | "atlassian_space" 
+  | "website_area" 
+  | "external_website";
+
 
 /* ── Lookup table row types ── */
 
@@ -98,13 +107,22 @@ export interface Owner {
   created_at: string;
 }
 
-/** A hosting location/platform for the guidance document */
+/** A hosting location/platform for the guidance document with hierarchical structure */
 export interface Location {
   id: string;
   slug: string;
   label: string;
   description: string | null;
   created_at: string;
+  // Hierarchical structure fields
+  parent_id: string | null;
+  location_type: LocationType;
+  root_url: string | null;
+  search_keywords: string[] | null;
+  location_access: AccessLevel | null;
+  location_owner_id: string | null;
+  // Campus availability - array of campus identifiers
+  campus_availability: string[]; // uk, malaysia, china
 }
 
 /* ── Core entity ── */
@@ -124,6 +142,8 @@ export interface GuidanceItem {
   notes_internal: string | null;
   is_archived: boolean;
   tags: string[];
+  parent_id: string | null; // Parent guidance item for collection relationships
+  collection_title: string | null; // Title for collection parent items
   created_at: string;
   updated_at: string;
   created_by: string | null;

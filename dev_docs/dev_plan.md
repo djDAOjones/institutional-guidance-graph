@@ -170,7 +170,99 @@ institutional-guidance-graph/
 
 ---
 
-## Phase 0 — Project Scaffolding and Database Schema
+## Completed Phases
+
+### ✅ Phase 0 — Project Scaffolding and Database Schema *(COMPLETED)*
+
+**Goal**: Working repo, deployed skeleton, seeded database.
+
+**Status**: All database migrations applied, Supabase configured, Next.js app deployed to Vercel.
+
+### ✅ Phase 1 — MVP Features *(COMPLETED)*
+
+**Goal**: Auth, CRUD, hierarchical data management — all working end-to-end.
+
+**Core Features Completed**:
+- ✅ Authentication flow with Supabase Auth
+- ✅ Dashboard layout with navigation 
+- ✅ Full CRUD for guidance items with comprehensive form
+- ✅ **Hierarchical location structure** with parent/child relationships
+- ✅ **Searchable relationship categories** with inline fuzzy search (Fuse.js)
+- ✅ Multi-select audiences and all relationship types
+- ✅ Technical services staff as audience type
+- ✅ Location type filtering with proper UX (no page reloads)
+- ✅ Carbon Design System styling throughout
+- ✅ WCAG AAA compliance (7:1 contrast, keyboard navigation)
+- ✅ Debounced inputs and memoised calculations for performance
+
+### ✅ Phase 1.5 — UX Enhancements *(COMPLETED)*
+
+**Goal**: Streamlined user experience based on real usage patterns.
+
+**UX Improvements Completed**:
+- ✅ **Pure Diátaxis framework** - removed service_manual, back to tutorial/how-to/reference/explanation
+- ✅ **"Intended" status** as first option and default for new items
+- ✅ **Content Title** label (more generic than "Title")
+- ✅ **Simplified campus scope** - defaults to all campuses (relevance not availability)
+- ✅ **Simple access checkbox** - public/private only (no more 3-way dropdown)
+- ✅ **Hidden internal notes** - preserved as hidden field to reduce form clutter
+- ✅ **Audience shortcuts** - "All Staff" and "All Students" with expandable detailed selection
+- ✅ **Collection relationships** - parent/child structure for monolithic guides (HAS_PART/IS_PART_OF)
+- ✅ **Smart task/topic selection** - tasks auto-populate default topics, expandable for additional ones
+- ✅ **Task default topics database** - reduces repetitive data entry
+- ✅ **Collection default maintainers** - inherit maintainers from parent collections
+- ✅ **Simple/Advanced editing modes** - toggle between streamlined and full control
+
+### ✅ Phase 1.6 — UX Polish & Refinements *(COMPLETED)*
+
+**Goal**: Address user feedback and polish existing features for optimal experience.
+
+**Refinements Completed**:
+- ✅ **Collection fields in both modes** - parent/child relationships available in simple & advanced
+- ✅ **Improved topic button text** - changed "add additional topics" to "show topics"
+- ✅ **Fixed location filter jumps** - buttons now stay in position when filtering
+- ✅ **Campus availability for locations** - visual badges showing UK/Malaysia/China availability
+- ✅ **Database schema evolution** - added location campus_availability with constraints
+- ✅ **URL-based location auto-population** - smart domain matching with visual feedback
+- ✅ **Navigation document type** - added fifth option beyond pure Diátaxis framework
+
+### ✅ Phase 1.7 — Final Polish *(COMPLETED)*
+
+**Goal**: Complete remaining refinements and prepare for code review.
+
+**Final Enhancements**:
+- ✅ **Smart URL auto-population** - automatically suggests hosted locations based on domain matching
+- ✅ **Enhanced document types** - added "Navigation" for wayfinding content beyond Diátaxis
+- ✅ **Documentation updates** - reorganized to_add.md to reflect true completion status
+
+**Enhanced Components Built**:
+- `GuidanceItemForm.tsx` — Streamlined form with smart defaults, simple/advanced toggle, and URL auto-population
+- `LocationSelector.tsx` — Enhanced with campus availability badges and no-jump filtering  
+- `SearchableCheckboxGroup.tsx` — Reusable fuzzy search for relationships
+- `AudienceSelector.tsx` — All staff/all students shortcuts with expandable details
+- `TaskTopicSelector.tsx` — Smart task selection with improved button text
+- Data table with pure Diátaxis + Navigation document type badges
+
+---
+
+## Current Phase
+
+### 🎯 Phase 2.0 — Ready for Code Review *(READY)*
+
+**Goal**: Prepare for architectural review and plan next phase of development.
+
+**Current Status**: 
+- ✅ **All UX enhancements completed** - comprehensive form with smart defaults, simple/advanced modes
+- ✅ **Database schema mature** - collections, campus availability, RLS policies, constraints
+- ✅ **Component architecture stable** - modular selectors with consistent patterns
+- ✅ **Documentation current** - to_add.md reorganized, dev_plan.md updated
+
+**Remaining Low-Priority Items**:
+- [ ] **Dynamic relationship management** — Allow users to add new relationship categories (low priority)
+
+---
+
+## Phase 0 — Project Scaffolding and Database Schema *(REFERENCE)*
 
 **Goal**: Working repo, deployed skeleton, seeded database.
 
