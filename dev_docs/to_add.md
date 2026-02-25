@@ -73,7 +73,19 @@
    - ✅ Maintainers: Updated existing relationships (Digital Education Service → Faculty and School Support, Digital Education Service - Learning Content Team → Learning Content Team)
 2. **UI improvements**: Campus availability badges now display on separate line for better title visibility in LocationSelector
 
+## ✅ Completed - Phase 2.2: Vocabulary Management & Location Cleanup
+
+1. **Inline vocabulary CRUD** — Add/edit/delete for Services, Tasks, Topics, Owners, Maintainers via enhanced `SearchableCheckboxGroup` with `vocabTable` prop
+2. **Inline location CRUD** — Add/edit/delete for Hosted Locations (not categories) via enhanced `LocationSelector` with inline form (label, type, URL, description)
+3. **Clickable location URLs** — Storage location URLs now render as clickable links opening in new tabs
+4. **Location cleanup migration** (`00012_cleanup_locations.sql`) — Deletes all locations except: DES Blog, Brand Resources, Video in Teaching and Learning, Brickfield Help, Microsoft Help, all Faculty locations, Libraries
+5. **Preserved location categories** — All location_type enum values (SharePoint, Xerte, Atlassian, Website, External) remain intact
+6. **SharePoint UK-only** — All SharePoint sites set to `campus_availability = '{uk}'`
+7. **Type integrity cleanup** — Removes any SharePoint/Xerte/external sites not in their correct location_type category
+8. **Server actions** — New `src/lib/actions/vocabulary.ts` with `createVocabularyItem`, `updateVocabularyItem`, `deleteVocabularyItem`
+9. **Seed data updated** — `supabase/seed.sql` reflects cleaned-up location set with proper hierarchical fields
+
 ## 🔄 Remaining
 
-1. Give users the ability to add new relationship categories
-2. Vocabulary management UI for tasks, topics, and default topics (admin interface)
+- ⏳ Apply migration `00012_cleanup_locations.sql` to Supabase (requires Supabase Dashboard SQL Editor or CLI)
+- Visualization features (deferred)

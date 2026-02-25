@@ -102,19 +102,24 @@ INSERT INTO owners (slug, label, description) VALUES
   ('learning_content_team', 'Learning Content Team', 'Learning Content Team (formerly Digital Education Service - Learning Content Team)');
 
 -- ═══════════════════════════════════════════════
--- Locations (10 hosting platforms)
+-- Locations (kept locations only — cleaned up in migration 00012)
 -- ═══════════════════════════════════════════════
-INSERT INTO locations (slug, label, description) VALUES
-  ('workspace', 'Workspace (Confluence/Wiki)', 'Internal wiki or knowledge base'),
-  ('sharepoint_site', 'SharePoint Site', 'SharePoint Online site or page'),
-  ('university_website', 'University Website', 'Public-facing university website'),
-  ('moodle_site', 'Moodle Site', 'Content hosted within Moodle'),
-  ('qm_handbook', 'QM Handbook', 'Quality Manual / academic handbook'),
-  ('pdf_document', 'PDF Document', 'Standalone PDF document'),
-  ('teams_channel', 'Teams Channel', 'Microsoft Teams channel or wiki'),
-  ('external_site', 'External Site', 'Third-party or vendor documentation'),
-  ('github_repo', 'GitHub Repository', 'Code repository or technical docs'),
-  ('video_platform', 'Video Platform', 'Panopto, YouTube, or similar');
+INSERT INTO locations (slug, label, description, location_type, root_url, campus_availability) VALUES
+  -- SharePoint sites (UK only)
+  ('video_teaching_learning', 'Video in Teaching and Learning', 'SharePoint site for video pedagogy resources', 'sharepoint_site', 'https://uniofnottm.sharepoint.com/sites/VideoTeachingLearning', '{uk}'),
+  ('brand_resources', 'Brand Resources', 'University brand guidelines and resources', 'sharepoint_site', 'https://uniofnottm.sharepoint.com/sites/BrandResources', '{uk}'),
+  -- Atlassian spaces
+  ('des_blog', 'DES Blog', 'Digital Education Service blog', 'atlassian_space', 'https://nottingham.atlassian.net/wiki/spaces/DESBlog', '{uk,malaysia,china}'),
+  -- Website areas
+  ('libraries', 'Libraries', 'University Libraries website', 'website_area', 'https://www.nottingham.ac.uk/libraries', '{uk,malaysia,china}'),
+  ('faculty_arts', 'Faculty of Arts', 'Faculty of Arts website', 'website_area', 'https://www.nottingham.ac.uk/arts', '{uk,malaysia,china}'),
+  ('faculty_mhs', 'Faculty of Medicine and Health Sciences', 'Faculty of Medicine and Health Sciences website', 'website_area', 'https://www.nottingham.ac.uk/mhs', '{uk,malaysia,china}'),
+  ('faculty_engineering', 'Faculty of Engineering', 'Faculty of Engineering website', 'website_area', 'https://www.nottingham.ac.uk/engineering', '{uk,malaysia,china}'),
+  ('faculty_socsci', 'Faculty of Social Sciences', 'Faculty of Social Sciences website', 'website_area', 'https://www.nottingham.ac.uk/socialsciences', '{uk,malaysia,china}'),
+  ('faculty_science', 'Faculty of Science', 'Faculty of Science website', 'website_area', 'https://www.nottingham.ac.uk/science', '{uk,malaysia,china}'),
+  -- External websites
+  ('microsoft_help', 'Microsoft Help', 'Microsoft documentation and help', 'external_website', 'https://support.microsoft.com', '{uk,malaysia,china}'),
+  ('brickfield_help', 'Brickfield Help', 'Brickfield accessibility tool help', 'external_website', 'https://www.brickfield.ie/support', '{uk,malaysia,china}');
 
 -- ═══════════════════════════════════════════════
 -- Topics (initial cross-cutting themes)

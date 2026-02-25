@@ -489,6 +489,7 @@ export default function GuidanceItemForm({
           items={lookups.services}
           selectedIds={selectedRelations?.service_ids ?? []}
           placeholder="Search services..."
+          vocabTable="services"
         />
 
         {/* Audiences — with shortcuts */}
@@ -516,6 +517,7 @@ export default function GuidanceItemForm({
           items={lookups.owners}
           selectedIds={selectedRelations?.owner_ids ?? []}
           placeholder="Search owners..."
+          vocabTable="owners"
         />
 
         {/* Maintainers (day-to-day) */}
@@ -525,6 +527,7 @@ export default function GuidanceItemForm({
           items={lookups.owners}
           selectedIds={selectedRelations?.maintainer_ids ?? []}
           placeholder="Search maintainers..."
+          vocabTable="owners"
         />
 
         {/* Locations - using hierarchical location selector */}

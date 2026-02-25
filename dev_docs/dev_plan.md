@@ -288,6 +288,38 @@ institutional-guidance-graph/
 
 ---
 
+### ✅ Phase 2.2 — Vocabulary Management & Location Cleanup *(COMPLETED)*
+
+**Goal**: Inline vocabulary CRUD for all relationship categories, location cleanup, and clickable URLs.
+
+**Changes Implemented**:
+
+- ✅ **Inline vocabulary CRUD** — Enhanced `SearchableCheckboxGroup` with `vocabTable` prop enabling add/edit/delete for Services, Tasks, Topics, Owners, Maintainers directly within the guidance form
+- ✅ **Inline location CRUD** — Enhanced `LocationSelector` with add/edit/delete for individual locations (not categories) with inline form supporting label, type, URL, and description fields
+- ✅ **Clickable location URLs** — Storage location URLs now render as `<a>` links with `target="_blank"` and `rel="noopener noreferrer"`
+- ✅ **Location cleanup migration** — Created `00012_cleanup_locations.sql` to delete all locations except: DES Blog, Brand Resources, Video in Teaching and Learning, Brickfield Help, Microsoft Help, all Faculty locations, Libraries
+- ✅ **Preserved location categories** — All `location_type` enum values (SharePoint, Xerte, Atlassian, Website, External) remain intact
+- ✅ **SharePoint UK-only** — All SharePoint sites set to `campus_availability = '{uk}'`
+- ✅ **Type integrity cleanup** — Migration removes any SharePoint/Xerte/external sites not in their correct `location_type` category
+- ✅ **Server actions** — New `src/lib/actions/vocabulary.ts` with `createVocabularyItem`, `updateVocabularyItem`, `deleteVocabularyItem` (table-name validated, slug auto-generated)
+- ✅ **Seed data updated** — `supabase/seed.sql` reflects cleaned-up location set with proper hierarchical fields
+
+**New/Modified Files**:
+
+- `src/lib/actions/vocabulary.ts` — Server actions for vocabulary CRUD
+- `src/components/SearchableCheckboxGroup.tsx` — Enhanced with inline add/edit/delete
+- `src/components/LocationSelector.tsx` — Enhanced with CRUD + clickable URLs
+- `src/components/TaskTopicSelector.tsx` — Added `vocabTable` props
+- `src/components/GuidanceItemForm.tsx` — Added `vocabTable` props to all checkbox groups
+- `supabase/migrations/00012_cleanup_locations.sql` — Location cleanup migration
+- `supabase/seed.sql` — Updated location seed data
+
+**Database Migration Pending**:
+
+- Migration 00012: cleanup_locations (apply via Supabase Dashboard SQL Editor)
+
+---
+
 ## Current Phase
 
 ### 🎯 Phase 3.0 — Graph Visualisation *(NEXT)*
@@ -296,8 +328,8 @@ institutional-guidance-graph/
 
 **Remaining Low-Priority Items**:
 
-- [ ] **Dynamic relationship management** — Allow users to add new relationship categories
-- [ ] **Vocabulary management UI** — Admin interface for tasks, topics, default topics
+- [x] **Dynamic relationship management** — Inline add/edit/delete for all relationship categories
+- [x] **Vocabulary management UI** — Inline CRUD for services, tasks, topics, owners, locations
 - [ ] **Auto-generate Supabase types** — `npx supabase gen types typescript` for full type-safe queries
 
 ---

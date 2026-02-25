@@ -70,6 +70,7 @@ export default function TaskTopicSelector({
         items={tasks}
         selectedIds={selectedTaskIds}
         placeholder="Search tasks..."
+        vocabTable="tasks"
       />
 
       {/* Topics - Auto-selected + Manual */}
@@ -139,6 +140,7 @@ export default function TaskTopicSelector({
               items={topics}
               selectedIds={selectedTopicIds.filter(id => !defaultTopicIds.includes(id))}
               placeholder="Search additional topics..."
+              vocabTable="topics"
             />
           </div>
         )}
