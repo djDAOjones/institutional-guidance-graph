@@ -5,7 +5,7 @@
   "description": "A structured register mapping institutional guidance documents for the University of Nottingham.",
   "scripts": {
     "dev": "next dev",
-    "dev:clean": "bash scripts/dev.sh",
+    "dev:clean": "bash scripts/dev-server-startup.sh",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
